@@ -30,16 +30,24 @@
                 </span></td>
             <td class="col-biaya">Rp{{ number_format($item->total_biaya, 0, ',', '.') }}</td>
             <td class="col-laporan">
-                <a class="btn btn-outline-primary btn-sm" href="{{ asset('storage/' . $item->laporan) }}"
-                    target="_blank">
-                    <i class="bi bi-file-earmark-pdf"></i> Lihat
-                </a>
+                @if ($item->laporan)
+                    <a class ="btn btn-outline-primary btn-sm" href="{{ asset('storage/' . $item->laporan) }}"
+                        target="_blank">
+                        <i class="bi bi-file-earmark-pdf"></i> Lihat
+                    </a>
+                @else
+                    -
+                @endif
             </td>
             <td class="col-sertifikat">
-                <a class="btn btn-outline-primary btn-sm" href="{{ asset('storage/' . $item->sertifikat) }}"
-                    target="_blank">
-                    <i class="bi bi-file-earmark-pdf"></i> Lihat
-                </a>
+                @if ($item->sertifikat)
+                    <a class="btn btn-outline-primary btn-sm" href="{{ asset('storage/' . $item->sertifikat) }}"
+                        target="_blank">
+                        <i class="bi bi-file-earmark-pdf"></i> Lihat
+                    </a>
+                @else
+                    -
+                @endif
             </td>
             <td class="col-aksi text-center gap-2">
                 <a href="{{ route('dashboard.pelatihan.laporan.show', $item->id) }}" class="btn btn-sm btn-primary"

@@ -252,7 +252,7 @@ Route::middleware(['role:superadmin'])->group(function () {
             Route::post('/store', 'store')->name('.store');
             Route::get('/edit/{id}', 'edit')->name('.edit');
             Route::put('/update/{id}', 'update')->name('.update');
-            Route::put('/update-bulk', 'update')->name('.update-bulk');
+            Route::put('/update-bulk', 'updateBulk')->name('.update-bulk');
             Route::delete('/delete/{id}', 'destroy')->name('.destroy');
 
             // Ekspor

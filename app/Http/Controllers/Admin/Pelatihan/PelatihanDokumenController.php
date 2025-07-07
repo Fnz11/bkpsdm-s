@@ -118,7 +118,8 @@ class PelatihanDokumenController extends Controller
     {
         $dokumen = Pelatihan3Dokumen::with(['pendaftarans.user', 'pendaftarans.tersedia', 'pendaftarans.usulan'])
             ->findOrFail($id);
-        return view('dashboard.pelatihan.dokumen.detail', compact('dokumen'));
+        $pendaftarans = $dokumen->pendaftarans()->with(['tersedia', 'usulan'])->paginate(10);
+        return view('dashboard.pelatihan.dokumen.detail', compact('dokumen', 'pendaftarans'));
     }
 
     /**

@@ -24,7 +24,16 @@
                     {{ $item->tersedia?->nama_pelatihan ?? ($item->usulan?->nama_pelatihan ?? '-') }}
                 </td>
                 <td class="col-tanggal">{{ \Carbon\Carbon::parse($item->tanggal_pendaftaran)->format('d M Y') }}</td>
-                <td class="col-surat">{{ $item->dokumens?->file_path ?? '-' }}</td>
+                <td class="col-surat">
+                    @if ($item->dokumen)
+                        <a class="btn btn-outline-primary btn-sm"
+                            href="{{ asset('storage/' . $item->dokumen?->file_path) }}" target="_blank">
+                            <i class="bi bi-file-earmark-pdf"></i> Lihat
+                        </a>
+                    @else
+                        -
+                    @endif
+                </td>
                 <td class="col-statusverif">
                     <span
                         class="badge bg-{{ $item->status_verifikasi === 'tersimpan'
