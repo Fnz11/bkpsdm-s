@@ -1,4 +1,4 @@
-@extends('layouts.pelatihan.pelatihan-dashboard')
+@extends('layouts.Pelatihan.pelatihan-dashboard')
 
 @section('title', 'Dokumen Usulan Pelatihan')
 @section('page-title', 'Dokumen Usulan Pelatihan')
@@ -71,7 +71,7 @@
 
 @section('content')
     <div class="card border-0 shadow-sm">
-        @if (isset($deadline) && now()->gt($deadline->tanggal_deadline))
+        @if (isset($deadline) && now()->gt(\Carbon\Carbon::parse($deadline->tanggal_deadline)->endOfDay()))
             <div class="alert alert-warning border-0 rounded-0 m-0">
                 <div class="d-flex align-items-center">
                     <i class="bi bi-exclamation-triangle-fill me-2"></i>
@@ -112,7 +112,7 @@
 
                     <!-- Filter Kolom -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-md dropdown-toggle border border-secondary" type="button" id="columnDropdown"
+                        <button class="btn btn-outline-secondary btn-md dropdown-toggle" type="button" id="columnDropdown"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                             <i class="bi bi-eye me-1"></i> Kolom
                         </button>
@@ -131,7 +131,7 @@
 
                     <!-- Tombol Dropdown Filter -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle border border-primary" type="button" data-bs-toggle="dropdown"
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <i class="bi bi-filter me-1"></i>Filter
                         </button>
@@ -207,7 +207,7 @@
                 </div>
 
                 <div class="d-flex flex-column flex-md-row align-items-md-center gap-2">
-                    @if (isset($deadline) && now()->gt($deadline->tanggal_deadline))
+                    @if (isset($deadline) && now()->gt(\Carbon\Carbon::parse($deadline->tanggal_deadline)->endOfDay()))
                         <small class="text-danger d-block">Upload dokumen sudah ditutup</small>
                     @else
                         <a href="{{ route('dashboard.pelatihan.dokumen.create') }}" class="btn btn-primary">

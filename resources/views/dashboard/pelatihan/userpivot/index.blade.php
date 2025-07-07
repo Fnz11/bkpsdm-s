@@ -133,7 +133,7 @@
             <!-- View Toggle -->
             <div class="table-view-toggle">
                 <input type="radio" class="btn-check" name="viewType" id="view-aktif" autocomplete="off" checked>
-                <label class="btn btn-sm btn-outline-primary" for="view-aktif">Data Aktif</label>
+                <label class="btn btn-sm btn-outline-primary" for="view-aktif">History Pegawai</label>
 
                 <input type="radio" class="btn-check" name="viewType" id="view-usulan" autocomplete="off">
                 <label class="btn btn-sm btn-outline-primary" for="view-usulan">Usulan Perubahan</label>
