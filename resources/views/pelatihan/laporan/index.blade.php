@@ -57,7 +57,7 @@
                                 Tampilkan Kolom
                             </button>
                             <ul class="dropdown-menu dropdown-menu-modern" aria-labelledby="columnDropdown">
-                                @foreach (['no', 'judul', 'latar', 'hasil', 'biaya', 'laporan', 'sertifikat', 'aksi'] as $col)
+                                @foreach (['no', 'judul', 'latar', 'hasil', 'biaya', 'laporan', 'sertifikat', 'batas', 'aksi'] as $col)
                                     <li>
                                         <label class="dropdown-item-modern">
                                             <input type="checkbox" class="form-check-input me-2 toggle-col"

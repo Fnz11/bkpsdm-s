@@ -45,7 +45,9 @@ class User extends Authenticatable
 
     public function latestUserPivot()
     {
-        return $this->hasOne(UserPivot::class, 'nip', 'nip')->latestOfMany('id');
+        return $this->hasOne(UserPivot::class, 'nip', 'nip')
+            ->where('is_active', 1)
+            ->orderByDesc('id');
     }
 
     public function refPegawai()

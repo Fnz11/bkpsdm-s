@@ -1,4 +1,4 @@
-@extends('layouts.pelatihan.pelatihan-dashboard')
+@extends('layouts.Pelatihan.pelatihan-dashboard')
 
 @section('title', 'Tambah Dokumen Pelatihan')
 @section('page-title', 'Tambah Dokumen Pelatihan')
@@ -33,7 +33,7 @@
 @endsection
 
 @section('content')
-    <div class="card">
+    <div class="card p-3">
         <div class="card-body">
 
             @if (session('success'))
@@ -50,7 +50,7 @@
 
                 <div class="form-group mb-3">
                     <label for="file_path">Unggah File</label>
-                    <input type="file" name="file_path" id="file_path" class="form-control" required>
+                    <input type="file" name="file_path" id="file_path" class="form-control" accept=".pdf" required>
                 </div>
 
                 <div class="form-group mb-3">
@@ -100,7 +100,8 @@
                 <input type="hidden" name="admin_nip" value="{{ auth()->user()->nip }}">
 
                 <div class="d-flex justify-content-between">
-                    <a class="btn btn-outline-secondary" href="{{ route('dashboard.pelatihan.dokumen') }}"><i class="bi bi-x-circle me-1"></i>Batal</a>
+                    <a class="btn btn-outline-secondary" href="{{ route('dashboard.pelatihan.dokumen') }}"><i
+                            class="bi bi-x-circle me-1"></i>Batal</a>
                     <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-1"></i>Kirim
                         Dokumen</button>
                 </div>

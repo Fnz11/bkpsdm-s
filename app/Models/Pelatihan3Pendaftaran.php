@@ -58,4 +58,30 @@ class Pelatihan3Pendaftaran extends Model
     {
         return $this->belongsTo(Pelatihan3Dokumen::class, 'dokumen_id');
     }
+
+    public function tenggatUploads()
+    {
+        return $this->hasMany(PelatihanTenggatUpload::class, 'pendaftaran_id');
+    }
+
+    // Deadline khusus untuk pendaftar ini
+    public function latestDeadlineIndividu()
+    {
+        return $this->hasOne(PelatihanTenggatUpload::class, 'pendaftaran_id')
+            ->where('jenis_deadline', 'laporan_user')
+            ->latestOfMany('tanggal_deadline');
+    }
+
+    // Deadline global dari pelatihannya
+    public function latestDeadlineGlobal()
+    {
+        return $this->hasOne(PelatihanTenggatUpload::class, 'tersedia_id', 'tersedia_id')
+            ->where('jenis_deadline', 'laporan_user')
+            ->latestOfMany('tanggal_deadline');
+    }
+
+    public function getEffectiveDeadline()
+    {
+        return $this->latestDeadlineIndividu ?? $this->latestDeadlineGlobal;
+    }
 }

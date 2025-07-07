@@ -65,7 +65,10 @@ class DeepwarePelatihanInfoController extends Controller
         Pelatihan1Info::create($validated);
 
         // Redirect back with a success message
-        return redirect()->route('dashboard.pelatihan.info')->with('success', 'Pelatihan info created successfully.');
+        return redirect()->route('dashboard.pelatihan.info')->with([
+            'message' => 'Pelatihan info created successfully.',
+            'title' => 'Success'
+        ]);
     }
 
     public function edit($id)
@@ -99,7 +102,10 @@ class DeepwarePelatihanInfoController extends Controller
         $pelatihan->update($validated);
 
         // Redirect back with a success message
-        return redirect()->route('dashboard.pelatihan.info')->with('success', 'Pelatihan info updated successfully.');
+        return redirect()->route('dashboard.pelatihan.info')->with([
+            'message' => 'Pelatihan info updated successfully.',
+            'title' => 'Success'
+        ]);
     }
 
     public function destroy($id)
@@ -116,6 +122,9 @@ class DeepwarePelatihanInfoController extends Controller
         $pelatihan->delete();
 
         // Redirect back with a success message
-        return redirect()->route('dashboard.pelatihan.info')->with('success', 'Pelatihan info deleted successfully.');
+        return redirect()->route('dashboard.pelatihan.info')->with([
+            'message' => 'Pelatihan info deleted successfully.',
+            'title' => 'Success'
+        ]);
     }
 }

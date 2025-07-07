@@ -17,7 +17,7 @@ class PelatihanTenggatUploadController extends Controller
 
         $modalFields = $this->getModalFields();
 
-        $tenggats = PelatihanTenggatUpload::with(['pelatihanTersedia', 'pendaftaran'])
+        $tenggats = PelatihanTenggatUpload::with(['tersedia', 'pendaftaran'])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('keterangan', 'like', "%{$search}%")

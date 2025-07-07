@@ -97,7 +97,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pelatihan/usulan-pelatihan/detail/{id}', [PelatihanUsulanUserController::class, 'show'])->name('pelatihan.usulan.show');
     Route::get('/pelatihan/usulan-pelatihan/edit/{id}', [PelatihanUsulanUserController::class, 'editUsulan'])->name('pelatihan.usulan.edit');
     Route::put('/pelatihan/usulan-pelatihan/update/{id}', [PelatihanUsulanUserController::class, 'updateUsulan'])->name('pelatihan.usulan.update');
-    
+
     // Nomenklatur
     Route::get('/pelatihan/nomenklatur', [PelatihanUsulanUserController::class, 'index'])->name('pelatihan.nomenklatur');
     Route::get('/pelatihan/tambah-nomenklatur', [PelatihanUsulanUserController::class, 'create'])->name('pelatihan.create-nomenklatur');
@@ -119,6 +119,8 @@ Route::middleware(['role:superadmin'])->group(function () {
     Route::prefix('/dashboard/pelatihan')->group(function () {
         // Dashboard utama
         Route::get('/', [DeepwarePelatihanController::class, 'dashboard'])->name('dashboard.pelatihan');
+        Route::get('/chart-data', [DashboardPelatihan::class, 'getChartData'])
+            ->name('dashboard.pelatihan.chart-data');
 
         /**
          * ================================
@@ -133,6 +135,11 @@ Route::middleware(['role:superadmin'])->group(function () {
             Route::get('/edit/{id}', 'edit')->name('.edit');
             Route::put('/update/{id}', 'update')->name('.update');
             Route::delete('/delete/{id}', 'destroy')->name('.destroy');
+
+            // Ekspor
+            Route::get('/export/excel', 'cetakExcel')->name('.cetak-excel');
+            Route::get('/export/pdf', 'cetakPdf')->name('.cetak-pdf');
+            Route::get('/preview', 'preview')->name('.preview');
         });
 
         /**

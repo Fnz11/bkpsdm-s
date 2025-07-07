@@ -24,7 +24,7 @@ class PelatihanTenggatUpload extends Model
     /**
      * Relasi ke pelatihan tersedia (jika berlaku global)
      */
-    public function pelatihanTersedia()
+    public function tersedia()
     {
         return $this->belongsTo(Pelatihan2Tersedia::class, 'tersedia_id');
     }

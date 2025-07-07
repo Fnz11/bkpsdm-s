@@ -84,7 +84,7 @@ class PelatihanDokumenController extends Controller
     {
         $request->validate([
             'nama_dokumen' => 'required|string|max:255',
-            'file_path' => 'required|file|mimes:pdf,docx,xlsx,jpg,png',
+            'file_path' => 'required|file|mimes:pdf|max:2048',
             'pendaftaran_ids' => 'required|array',
             'pendaftaran_ids.*' => 'exists:pelatihan_3_pendaftarans,id',
             'keterangan' => 'nullable|string|max:255',

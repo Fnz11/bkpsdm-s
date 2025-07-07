@@ -1,4 +1,4 @@
-@extends('layouts.pelatihan.pelatihan-dashboard')
+@extends('layouts.Pelatihan.pelatihan-dashboard')
 
 @section('title', 'Edit Usulan Pelatihan')
 @section('page-title', 'Edit Usulan Pelatihan')
@@ -185,6 +185,31 @@
                                 Keterangan</label>
                             <textarea class="form-control" rows="3" readonly>{{ $pelatihan->keterangan }}</textarea>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold"><i class="bi bi-chat-left-text me-1"></i>
+                                Status Verifikasi</label>
+                            <select class="form-select" name="status_verifikasi" required>
+                                <option value="tersimpan"
+                                    {{ $pelatihan->pendaftaran?->status_verifikasi == 'tersimpan' ? 'selected' : '' }}
+                                    disabled>
+                                    Tersimpan</option>
+                                <option value="tercetak"
+                                    {{ $pelatihan->pendaftaran?->status_verifikasi == 'tercetak' ? 'selected' : '' }}
+                                    disabled>
+                                    Tercetak</option>
+                                <option value="terkirim"
+                                    {{ $pelatihan->pendaftaran?->status_verifikasi == 'terkirim' ? 'selected' : '' }}
+                                    disabled>
+                                    Terkirim</option>
+                                <option value="diterima"
+                                    {{ $pelatihan->pendaftaran?->status_verifikasi == 'diterima' ? 'selected' : '' }}>
+                                    Diterima</option>
+                                <option value="ditolak"
+                                    {{ $pelatihan->pendaftaran?->status_verifikasi == 'ditolak' ? 'selected' : '' }}>
+                                    Ditolak</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Tombol Aksi -->
@@ -226,7 +251,7 @@
                             if (response.success) {
                                 $('#nama').val(response.data.name ?? '');
                                 $('#pangkat_golongan').val(response.data.pangkat_golongan ??
-                                '');
+                                    '');
                                 $('#jabatan').val(response.data.jabatan ?? '');
                                 $('#unitkerja').val(response.data.unitkerja ?? '');
                                 $('#sub_unitkerja').val(response.data.sub_unitkerja ?? '');

@@ -2,7 +2,7 @@
     <tr>
         <th class="text-center col-no">No</th>
         <th class="col-nip">NIP Pengusul</th>
-        <th class="col-uk">Nama Pelatihan</th>
+        <th class="col-uk">Unit Kerja</th>
         <th class="col-nama">Nama Pelatihan</th>
         <th class="col-jenis">Jenis Pelatihan</th>
         <th class="col-metode">Metode Pelatihan</th>
@@ -45,23 +45,23 @@
             </td>
             <td class="col-keterangan">{{ $item->keterangan }}</td>
             @if (auth()->user()->hasRole('superadmin'))
-            <td class="text-end col-aksi g-1">
-                <a href="{{ route('dashboard.pelatihan.usulan.show', $item->id) }}" class="btn btn-sm btn-primary">
-                    <i class="bi bi-eye"></i>
-                </a>
-                <a href="{{ route('dashboard.pelatihan.usulan.edit', $item->id) }}" class="btn btn-sm btn-warning">
-                    <i class="bi bi-pencil-square"></i>
-                </a>
-                <form action="{{ route('dashboard.pelatihan.usulan.destroy', $item->id) }}" method="POST"
-                    class="d-inline delete-form">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-sm btn-danger btn-delete"
-                        data-form-id="form-{{ $item->id }}">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>
-            </td>
+                <td class="text-end col-aksi g-1">
+                    <a href="{{ route('dashboard.pelatihan.usulan.show', $item->id) }}" class="btn btn-sm btn-primary">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="{{ route('dashboard.pelatihan.usulan.edit', $item->id) }}" class="btn btn-sm btn-warning">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <form action="{{ route('dashboard.pelatihan.usulan.destroy', $item->id) }}" method="POST"
+                        class="d-inline delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-sm btn-danger btn-delete"
+                            data-form-id="form-{{ $item->id }}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
             @endif
         </tr>
     @empty

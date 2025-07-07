@@ -33,7 +33,13 @@ class PelatihanLaporanController extends Controller
                 $query->where(function ($q) use ($search) {
                     $q->where('judul_laporan', 'like', "%{$search}%")
                         ->orWhere('latar_belakang', 'like', "%{$search}%")
-                        ->orWhere('total_biaya', 'like', "%{$search}%");
+                        ->orWhere('total_biaya', 'like', "%{$search}%")
+                        ->orWhereHas('pendaftaran.tersedia', function ($q2) use ($search) {
+                            $q2->where('nama_pelatihan', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('pendaftaran.usulan', function ($q3) use ($search) {
+                            $q3->where('nama_pelatihan', 'like', "%{$search}%");
+                        });
                 });
             })
             ->when($jenis, function ($query, $jenis) {

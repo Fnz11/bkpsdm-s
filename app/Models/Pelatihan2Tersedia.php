@@ -55,4 +55,9 @@ class Pelatihan2Tersedia extends Model
     {
         return $this->hasMany(Pelatihan3Pendaftaran::class, 'tersedia_id', 'id');
     }
+
+    public function tenggatUploads()
+    {
+        return $this->hasMany(PelatihanTenggatUpload::class, 'tersedia_id');
+    }
 }

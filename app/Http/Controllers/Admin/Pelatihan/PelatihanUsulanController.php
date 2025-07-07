@@ -176,7 +176,7 @@ class PelatihanUsulanController extends Controller
             'usulan_id' => $usulan->id,
             'user_nip' => $usulan->nip_pengusul,
             'status_verifikasi' => 'tersimpan',
-            'status_peserta' => 'pendaftar',
+            'status_peserta' => 'calon_peserta',
             'tanggal_pendaftaran' => now()->timezone('Asia/Jakarta'),
         ]);
 
@@ -219,8 +219,8 @@ class PelatihanUsulanController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'realisasi_biaya' => 'nullable|numeric',
-            'status_verifikasi' => 'required|in:diterima,ditolak',
+            'realisasi_biya' => 'nullable|numeric',
+            'status_verifikasi' => 'required|in:tersimpan,terkirim,tercetak,diterima,ditolak',
         ]);
 
         $pendaftaran = Pelatihan3Pendaftaran::where('usulan_id', $id)->first();
@@ -236,17 +236,23 @@ class PelatihanUsulanController extends Controller
                 'status_peserta' => 'peserta',
             ]);
 
-            Pelatihan4Laporan::create([
-                'pendaftaran_id' => $pendaftaran->id,
-                'judul_laporan' => 'Ubah setelah selesai pelatihan!',
-                'latar_belakang' => 'Ubah setelah selesai pelatihan!',
-                'sertifikat' => null,
-                'total_biaya' => 0,
-                'laporan' => null,
-                'hasil_pelatihan' => 'proses',
-            ]);
+            // Cek apakah sudah ada laporan untuk pendaftaran ini
+            $existingLaporan = Pelatihan4Laporan::where('pendaftaran_id', $pendaftaran->id)->first();
 
-            return redirect()->back()->with([
+            if (!$existingLaporan) {
+                // Jika belum ada laporan, buat baru
+                Pelatihan4Laporan::create([
+                    'pendaftaran_id' => $pendaftaran->id,
+                    'judul_laporan' => 'Ubah setelah selesai pelatihan!',
+                    'latar_belakang' => 'Ubah setelah selesai pelatihan!',
+                    'sertifikat' => null,
+                    'total_biaya' => 0,
+                    'laporan' => null,
+                    'hasil_pelatihan' => 'draft',
+                ]);
+            }
+
+            return redirect()->route('dashboard.pelatihan.usulan')->with([
                 'message' => 'Usulan pelatihan berhasil disetujui.',
                 'title' => 'Success',
             ]);
@@ -254,9 +260,10 @@ class PelatihanUsulanController extends Controller
             // If the status is 'ditolak', set status_peserta to 'ditolak'
             $pendaftaran->update([
                 'status_verifikasi' => $request->status_verifikasi,
+                'status_peserta' => 'calon_peserta',
             ]);
 
-            return redirect()->back()->with([
+            return redirect()->route('dashboard.pelatihan.usulan')->with([
                 'message' => 'Usulan pelatihan berhasil ditolak.',
                 'title' => 'Success',
             ]);

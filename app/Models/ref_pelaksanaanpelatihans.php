@@ -10,8 +10,15 @@ class ref_pelaksanaanpelatihans extends Model
     use HasFactory;
 
     protected $table = 'ref_pelaksanaanpelatihans';
+
     protected $fillable = [
         'kode_pelaksanaanpelatihan',
         'pelaksanaan_pelatihan',
     ];
+
+    // Relasi ke Pelatihan2Tersedia
+    public function tersedia()
+    {
+        return $this->hasMany(Pelatihan2Tersedia::class, 'pelaksanaanpelatihan_id');
+    }
 }

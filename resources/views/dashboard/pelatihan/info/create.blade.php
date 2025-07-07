@@ -1,11 +1,11 @@
-@extends('layouts.pelatihan.pelatihan-dashboard')
+@extends('layouts.Pelatihan.pelatihan-dashboard')
 
 @section('title', 'Tambah Informasi Pelatihan')
 @section('page-title', 'Tambah Informasi Pelatihan')
 
 @section('breadcrumb')
     <ol class="breadcrumb mt-2">
-        <li class="breadcrumb-item"><a href="{{ route('dashboard.pelatihan.dashboard') }}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('dashboard.pelatihan') }}">Dashboard</a></li>
         <li class="breadcrumb-item"><a href="{{ route('dashboard.pelatihan.info') }}">Informasi Pelatihan</a></li>
         <li class="breadcrumb-item active">Tambah Informasi Pelatihan</li>
     </ol>

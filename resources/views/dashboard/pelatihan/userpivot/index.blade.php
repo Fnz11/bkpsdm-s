@@ -1,4 +1,4 @@
-@extends('layouts.pelatihan.pelatihan-dashboard')
+@extends('layouts.Pelatihan.pelatihan-dashboard')
 
 @section('title', 'Manajemen Pivot User')
 @section('page-title', 'Manajemen Pivot User')
@@ -113,16 +113,16 @@
                     </div>
                 </div>
 
-                <div class="d-flex flex-column flex-md-row align-items-md-center gap-2">
+                <!-- Tombol Cetak (Hanya tampil di tab Data Aktif) -->
+                <div class="d-flex flex-column flex-md-row align-items-md-center gap-2" id="print-buttons">
                     <!-- Tombol Cetak Excel -->
-                    <button type="button" class="btn btn-outline-success border border-success" data-bs-toggle="modal"
+                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
                         data-bs-target="#modalExcel">
                         <i class="bi bi-file-earmark-excel me-1"></i> Excel
                     </button>
 
                     <!-- Tombol Cetak PDF -->
-                    <button type="button" class="btn btn-outline-danger border border-danger" data-bs-toggle="modal"
-                        data-bs-target="#modalPdf">
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#modalPdf">
                         <i class="bi bi-file-earmark-pdf me-1"></i> PDF
                     </button>
                 </div>
@@ -136,8 +136,7 @@
                 <label class="btn btn-sm btn-outline-primary" for="view-aktif">Data Aktif</label>
 
                 <input type="radio" class="btn-check" name="viewType" id="view-usulan" autocomplete="off">
-                <label class="btn btn-sm btn-outline-primary border border-primary" for="view-usulan">Usulan
-                    Perubahan</label>
+                <label class="btn btn-sm btn-outline-primary" for="view-usulan">Usulan Perubahan</label>
             </div>
 
             <!-- Aktif Table -->
@@ -146,7 +145,6 @@
                     @include('dashboard.pelatihan.userpivot._active', [
                         'activePivots' => $activePivots,
                     ])
-
                 </div>
                 <div id="pagination-wrapper-aktif" class="px-5 py-3 card-footer">
                     {{ $activePivots->links('pagination::bootstrap-5') }}
@@ -168,11 +166,8 @@
         </div>
     </div>
 
-    {{-- <!-- Modal Cetak PDF -->
-    @include('dashboard.pelatihan.userpivot.modal-pdf')
-
     <!-- Modal Cetak Excel -->
-    @include('dashboard.pelatihan.userpivot.modal-excel') --}}
+    @include('dashboard.pelatihan.userpivot.modal-cetak')
 @endsection
 
 @section('scripts')

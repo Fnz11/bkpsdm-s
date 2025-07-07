@@ -20,10 +20,12 @@ class PelatihanLaporanUserController extends Controller
         $userNip = Auth::user()->nip; // ambil NIP user login
 
         $laporans = Pelatihan4Laporan::with([
-            'pendaftaran.user', 
-            'pendaftaran.tersedia', 
-            'pendaftaran.usulan'])
-            // 'pendaftaran.tenggatUpload'])
+            'pendaftaran.user',
+            'pendaftaran.tersedia',
+            'pendaftaran.usulan',
+            'pendaftaran.latestDeadlineIndividu',
+            'pendaftaran.latestDeadlineGlobal'
+        ])
             ->whereHas('pendaftaran', function ($query) use ($userNip) {
                 $query->where('user_nip', $userNip); // filter data hanya milik user ini
             })
@@ -45,6 +47,10 @@ class PelatihanLaporanUserController extends Controller
             ->orderByDesc('created_at')
             ->paginate(25)
             ->withQueryString();
+
+        foreach ($laporans as $laporan) {
+            $laporan->deadline = $laporan->pendaftaran->getEffectiveDeadline();
+        }
 
         if ($request->ajax()) {
             return view('pelatihan.laporan.index', compact('laporans'))->render();

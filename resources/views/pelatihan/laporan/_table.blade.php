@@ -1,4 +1,4 @@
-@if($laporans->count() > 0)
+@if ($laporans->count() > 0)
     <div class="modern-table-wrapper">
         <table class="modern-table">
             <thead>
@@ -11,11 +11,12 @@
                     <th class="col-biaya">Biaya</th>
                     <th class="col-laporan">Laporan</th>
                     <th class="col-sertifikat">Sertifikat</th>
+                    <th class="col-batas">Batas Upload</th>
                     <th class="col-aksi">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($laporans as $index => $laporan)
+                @foreach ($laporans as $index => $laporan)
                     <tr class="table-row" data-status="{{ strtolower($laporan->hasil_pelatihan) }}">
                         <td class="col-no">
                             <span class="row-number">{{ $loop->iteration }}</span>
@@ -23,7 +24,7 @@
                         <td class="col-training">
                             <div class="training-info">
                                 <h6 class="training-title">
-                                    {{ $laporan->pendaftaran?->tersedia?->nama_pelatihan ?? ($laporan->pendaftaran?->usulan?->nama_pelatihan ?? 'Tidak tersedia') }}
+                                    {{ $laporan?->pendaftaran?->tersedia?->nama_pelatihan ?? ($laporan->pendaftaran?->usulan?->nama_pelatihan ?? 'Tidak tersedia') }}
                                 </h6>
                                 <div class="training-meta">
                                     @php
@@ -51,28 +52,29 @@
                         </td>
                         <td class="col-latar">
                             <div class="background-text">
-                                <span class="text-content" data-bs-toggle="tooltip" title="{{ $laporan->latar_belakang }}">
+                                <span class="text-content" data-bs-toggle="tooltip"
+                                    title="{{ $laporan->latar_belakang }}">
                                     {{ Str::limit($laporan->latar_belakang, 50) }}
                                 </span>
                             </div>
                         </td>
                         <td class="col-hasil">
                             @php
-                                $statusClass = match(strtolower($laporan->hasil_pelatihan)) {
+                                $statusClass = match (strtolower($laporan->hasil_pelatihan)) {
                                     'revisi' => 'status-revision',
                                     'lulus' => 'status-passed',
                                     'tidak lulus' => 'status-failed',
-                                    'draft' => 'status-draft',
+                                    // 'draft' => 'status-draft',
                                     'proses' => 'status-process',
-                                    default => 'status-pending'
+                                    default => 'status-pending',
                                 };
-                                $statusIcon = match(strtolower($laporan->hasil_pelatihan)) {
+                                $statusIcon = match (strtolower($laporan->hasil_pelatihan)) {
                                     'revisi' => 'bi-arrow-clockwise',
                                     'lulus' => 'bi-check-circle-fill',
                                     'tidak lulus' => 'bi-x-circle-fill',
-                                    'draft' => 'bi-file-earmark-text',
+                                    // 'draft' => 'bi-file-earmark-text',
                                     'proses' => 'bi-hourglass-split',
-                                    default => 'bi-clock-fill'
+                                    default => 'bi-clock-fill',
                                 };
                             @endphp
                             <span class="status-badge {{ $statusClass }}">
@@ -83,16 +85,15 @@
                         <td class="col-biaya">
                             <div class="cost-display">
                                 <i class="bi bi-currency-dollar me-1 text-muted"></i>
-                                <span class="cost-value">Rp {{ number_format($laporan->total_biaya, 0, ',', '.') }}</span>
+                                <span class="cost-value">Rp
+                                    {{ number_format($laporan->total_biaya, 0, ',', '.') }}</span>
                             </div>
                         </td>
                         <td class="col-laporan">
-                            @if($laporan->laporan)
-                                <a href="{{ asset('storage/laporan/' . $laporan->laporan) }}" 
-                                   target="_blank" 
-                                   class="btn btn-elegant btn-outline-primary btn-sm"
-                                   data-bs-toggle="tooltip" 
-                                   title="Lihat laporan">
+                            @if ($laporan->laporan)
+                                <a href="{{ asset('storage/laporan/' . $laporan->laporan) }}" target="_blank"
+                                    class="btn btn-elegant btn-outline-primary btn-sm" data-bs-toggle="tooltip"
+                                    title="Lihat laporan">
                                     <i class="bi bi-file-earmark-text-fill me-1"></i>
                                     <span>Lihat</span>
                                 </a>
@@ -104,12 +105,10 @@
                             @endif
                         </td>
                         <td class="col-sertifikat">
-                            @if($laporan->sertifikat)
-                                <a href="{{ asset('storage/sertifikat/' . $laporan->sertifikat) }}" 
-                                   target="_blank" 
-                                   class="btn btn-elegant btn-outline-success btn-sm"
-                                   data-bs-toggle="tooltip" 
-                                   title="Lihat sertifikat">
+                            @if ($laporan->sertifikat)
+                                <a href="{{ asset('storage/sertifikat/' . $laporan->sertifikat) }}" target="_blank"
+                                    class="btn btn-elegant btn-outline-success btn-sm" data-bs-toggle="tooltip"
+                                    title="Lihat sertifikat">
                                     <i class="bi bi-award-fill me-1"></i>
                                     <span>Lihat</span>
                                 </a>
@@ -120,160 +119,168 @@
                                 </span>
                             @endif
                         </td>
+                        <td class="col-batas">
+                            @if ($laporan->deadline)
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-clock me-1"></i>
+                                    {{ \Carbon\Carbon::parse($laporan->deadline->tanggal_deadline)->translatedFormat('d F Y') }}</span>
+                            @else
+                                <span class="file-empty">
+                                    <i class="bi bi-dash-circle me-1"></i>
+                                    Belum ada deadline
+                                </span>
+                            @endif
+                        </td>
                         <td class="col-aksi">
                             <div class="action-buttons">
                                 @php
-                                    // Ambil data deadline langsung dari relasi
-                                    $deadline = $laporan->pendaftaran->tenggatUpload ?? null;
-                                    
-                                    // Cek apakah masih bisa upload
+                                    // Ambil deadline dari relasi
+                                    $deadline = $laporan->deadline ?? null;
+                                    $now = now();
                                     $canUpload = true;
-                                    $deadlineText = '';
-                                    
+
                                     if ($deadline) {
-                                        $canUpload = now() < $deadline->tanggal_deadline;
-                                        $formattedDeadline = \Carbon\Carbon::parse($deadline->tanggal_deadline)->format('d F Y H:i');
-                                        $deadlineText = "Tenggat upload: {$formattedDeadline}";
+                                        $deadlineDate = \Carbon\Carbon::parse($deadline->tanggal_deadline);
+                                        $canUpload = $now->lte($deadlineDate); // true jika sekarang <= deadline
                                     }
                                 @endphp
-                                
+
                                 {{-- Tombol Edit --}}
-                                @if(!in_array(strtolower($laporan->hasil_pelatihan), ['lulus', 'tidak lulus','proses']) && $canUpload)
-                                    <button type="button" 
-                                            class="btn btn-elegant btn-outline-warning btn-sm" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#updateModal{{ $laporan->id }}" 
-                                            title="Edit laporan">
+                                @if (in_array(strtolower($laporan->hasil_pelatihan), ['draft', 'revisi']) && $canUpload)
+                                    <button type="button" class="btn btn-elegant btn-outline-warning btn-sm"
+                                        data-bs-toggle="modal" data-bs-target="#updateModal{{ $laporan->id }}"
+                                        title="Edit laporan">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
-                                @elseif(!$canUpload && $deadline)
-                                    <span class="btn btn-elegant btn-outline-danger btn-sm disabled" 
-                                          data-bs-toggle="tooltip" 
-                                          title="Tenggat upload telah berakhir pada {{ $formattedDeadline }}">
+                                    {{-- @elseif(!$canUpload && $deadline)
+                                    <span class="btn btn-elegant btn-outline-danger btn-sm disabled"
+                                        data-bs-toggle="tooltip"
+                                        title="Tenggat upload telah berakhir pada {{ $formattedDeadline }}">
                                         <i class="bi bi-clock-history me-1"></i>
                                         Expired
-                                    </span>
+                                    </span> --}}
                                 @endif
 
                                 {{-- Tombol Detail --}}
-                                <a href="{{ route('pelatihan.laporan-show', $laporan->id) }}" 
-                                   class="btn btn-elegant btn-outline-primary btn-sm" 
-                                   data-bs-toggle="tooltip" 
-                                   title="Lihat detail">
+                                <a href="{{ route('pelatihan.laporan-show', $laporan->id) }}"
+                                    class="btn btn-elegant btn-outline-primary btn-sm" data-bs-toggle="tooltip"
+                                    title="Lihat detail">
                                     <i class="bi bi-eye-fill"></i>
                                 </a>
-                                
+
                                 {{-- Info Deadline --}}
-                                @if($deadline && $canUpload)
+                                {{-- @if ($deadline && $canUpload)
                                     <div class="deadline-info">
                                         <i class="bi bi-clock me-1"></i>
                                         <small>{{ $deadlineText }}</small>
                                     </div>
-                                @endif
+                                @endif --}}
                             </div>
                         </td>
                     </tr>
 
-                    {{-- Modal Update --}}
-                    @if(strtolower($laporan->hasil_pelatihan) == 'revisi' || !$laporan->laporan)
-                        <div class="modal fade modal-modern" id="updateModal{{ $laporan->id }}" tabindex="-1" aria-labelledby="updateModalLabel{{ $laporan->id }}" aria-hidden="true">
+                    <!-- Modal Update untuk setiap laporan dengan status revisi,draft atau belum upload -->
+                    @if (strtolower($laporan->hasil_pelatihan) == 'revisi' || !$laporan->laporan)
+                        <div class="modal fade modal-modern" id="updateModal{{ $laporan->id }}" tabindex="-1"
+                            aria-labelledby="updateModalLabel{{ $laporan->id }}" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <!-- Modal Header -->
-                                    <div class="modal-header modal-header-modern 
-                                        @if(strtolower($laporan->hasil_pelatihan) == 'revisi') header-warning
+                                    <div
+                                        class="modal-header modal-header-modern 
+                                        @if (strtolower($laporan->hasil_pelatihan) == 'revisi') header-warning
                                         @else header-primary @endif">
                                         <h5 class="modal-title" id="updateModalLabel{{ $laporan->id }}">
                                             <i class="bi bi-pencil-square me-2"></i>
-                                            @if(strtolower($laporan->hasil_pelatihan) == 'revisi') 
+                                            @if (strtolower($laporan->hasil_pelatihan) == 'revisi')
                                                 Perbaikan Laporan
-                                            @elseif(strtolower($laporan->hasil_pelatihan) == 'draft') 
+                                            @elseif(strtolower($laporan->hasil_pelatihan) == 'draft')
                                                 Perbarui Laporan
-                                            @else 
-                                                Lengkapi Laporan 
+                                            @else
+                                                Lengkapi Laporan
                                             @endif
                                         </h5>
-                                        <button type="button" class="btn-close btn-close-modern" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close btn-close-modern"
+                                            data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    
-                                    <form action="{{ route('pelatihan.laporan.update', $laporan->id) }}" method="POST" enctype="multipart/form-data" class="form-modern">
+
+                                    <form action="{{ route('pelatihan.laporan.update', $laporan->id) }}" method="POST"
+                                        enctype="multipart/form-data" class="form-modern">
                                         @csrf
                                         @method('PUT')
                                         <div class="modal-body modal-body-modern">
                                             <!-- Status Alert -->
-                                            @if(strtolower($laporan->hasil_pelatihan) == 'revisi')
+                                            @if (strtolower($laporan->hasil_pelatihan) == 'revisi')
                                                 <div class="alert alert-modern alert-warning">
                                                     <i class="bi bi-exclamation-triangle me-2"></i>
-                                                    <strong>Revisi Diperlukan:</strong> Laporan Anda memerlukan perbaikan. Silakan perbarui sesuai catatan.
+                                                    <strong>Revisi Diperlukan:</strong> Laporan Anda memerlukan
+                                                    perbaikan. Silakan perbarui sesuai catatan.
                                                 </div>
                                             @elseif(strtolower($laporan->hasil_pelatihan) == 'draft')
                                                 <div class="alert alert-modern alert-info">
                                                     <i class="bi bi-info-circle me-2"></i>
-                                                    <strong>Draft Laporan:</strong> Anda masih dapat memperbarui laporan sebelum tenggat.
+                                                    <strong>Draft Laporan:</strong> Anda masih dapat memperbarui laporan
+                                                    sebelum tenggat.
                                                 </div>
                                             @else
                                                 <div class="alert alert-modern alert-primary">
                                                     <i class="bi bi-info-circle me-2"></i>
-                                                    <strong>Lengkapi Laporan:</strong> Silakan lengkapi data laporan dan unggah berkas yang diperlukan.
+                                                    <strong>Lengkapi Laporan:</strong> Silakan lengkapi data laporan dan
+                                                    unggah berkas yang diperlukan.
                                                 </div>
                                             @endif
 
                                             <!-- Form Fields -->
                                             <div class="form-section">
                                                 <div class="form-group-modern" style="width: 85.5%">
-                                                    <label for="judul_laporan{{ $laporan->id }}" class="form-label-modern">
+                                                    <label for="judul_laporan{{ $laporan->id }}"
+                                                        class="form-label-modern">
                                                         <i class="bi bi-file-text me-1"></i>Judul Laporan
                                                     </label>
-                                                    <input type="text" 
-                                                           class="form-control-modern" 
-                                                           id="judul_laporan{{ $laporan->id }}" 
-                                                           name="judul_laporan" 
-                                                           value="{{ $laporan->judul_laporan }}" 
-                                                           required>
+                                                    <input type="text" class="form-control-modern"
+                                                        id="judul_laporan{{ $laporan->id }}" name="judul_laporan"
+                                                        value="{{ $laporan->judul_laporan }}" required>
                                                 </div>
 
                                                 <div class="form-group-modern" style="width: 85.5%">
-                                                    <label for="latar_belakang{{ $laporan->id }}" class="form-label-modern">
+                                                    <label for="latar_belakang{{ $laporan->id }}"
+                                                        class="form-label-modern">
                                                         <i class="bi bi-file-text me-1"></i>Latar Belakang
                                                     </label>
-                                                    <textarea class="form-control-modern" 
-                                                              id="latar_belakang{{ $laporan->id }}" 
-                                                              name="latar_belakang" 
-                                                              rows="3" 
-                                                              required>{{ $laporan->latar_belakang }}</textarea>
+                                                    <textarea class="form-control-modern" id="latar_belakang{{ $laporan->id }}" name="latar_belakang" rows="3"
+                                                        required>{{ $laporan->latar_belakang }}</textarea>
                                                 </div>
 
                                                 <div class="form-group-modern" style="width: 85.5%">
-                                                    <label for="total_biaya{{ $laporan->id }}" class="form-label-modern">
+                                                    <label for="total_biaya{{ $laporan->id }}"
+                                                        class="form-label-modern">
                                                         <i class="bi bi-currency-dollar me-1"></i>Total Biaya
                                                     </label>
-                                                    <input type="number" 
-                                                           class="form-control-modern" 
-                                                           id="total_biaya{{ $laporan->id }}" 
-                                                           name="total_biaya" 
-                                                           value="{{ $laporan->total_biaya }}" 
-                                                           min="0" 
-                                                           required>
+                                                    <input type="number" class="form-control-modern"
+                                                        id="total_biaya{{ $laporan->id }}" name="total_biaya"
+                                                        value="{{ $laporan->total_biaya }}" min="0" required>
                                                 </div>
 
                                                 <div class="form-row">
                                                     <!-- Upload Laporan -->
                                                     <div class="form-group-modern">
-                                                        <label for="laporan{{ $laporan->id }}" class="form-label-modern">
+                                                        <label for="laporan{{ $laporan->id }}"
+                                                            class="form-label-modern">
                                                             <i class="bi bi-file-earmark-text me-1"></i>File Laporan
                                                         </label>
-                                                        <input type="file" 
-                                                               class="form-control-modern file-input" 
-                                                               id="laporan{{ $laporan->id }}" 
-                                                               name="laporan" 
-                                                               accept=".pdf,.doc,.docx" 
-                                                               {{ !$laporan->laporan ? 'required' : '' }}>
+                                                        <input type="file" class="form-control-modern file-input"
+                                                            id="laporan{{ $laporan->id }}" name="laporan"
+                                                            accept=".pdf,.doc,.docx"
+                                                            {{ !$laporan->laporan ? 'required' : '' }}>
                                                         <div class="file-help">
-                                                            <small class="text-muted">Format: PDF, DOC, DOCX (Max: 5MB)</small>
-                                                            @if($laporan->laporan)
+                                                            <small class="text-muted">Format: PDF, DOC, DOCX (Max:
+                                                                5MB)</small>
+                                                            @if ($laporan->laporan)
                                                                 <div class="current-file">
-                                                                    <i class="bi bi-check-circle text-success me-1"></i>
-                                                                    <small>File saat ini: {{ $laporan->laporan }}</small>
+                                                                    <i
+                                                                        class="bi bi-check-circle text-success me-1"></i>
+                                                                    <small>File saat ini:
+                                                                        {{ $laporan->laporan }}</small>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -281,21 +288,23 @@
 
                                                     <!-- Upload Sertifikat -->
                                                     <div class="form-group-modern" style="width: 69.5%">
-                                                        <label for="sertifikat{{ $laporan->id }}" class="form-label-modern">
+                                                        <label for="sertifikat{{ $laporan->id }}"
+                                                            class="form-label-modern">
                                                             <i class="bi bi-award me-1"></i>File Sertifikat
                                                         </label>
-                                                        <input type="file" 
-                                                               class="form-control-modern file-input" 
-                                                               id="sertifikat{{ $laporan->id }}" 
-                                                               name="sertifikat" 
-                                                               accept=".pdf,.jpg,.jpeg,.png" 
-                                                               {{ !$laporan->sertifikat ? 'required' : '' }}>
+                                                        <input type="file" class="form-control-modern file-input"
+                                                            id="sertifikat{{ $laporan->id }}" name="sertifikat"
+                                                            accept=".pdf,.jpg,.jpeg,.png"
+                                                            {{ !$laporan->sertifikat ? 'required' : '' }}>
                                                         <div class="file-help">
-                                                            <small class="text-muted">Format: PDF, JPG, PNG (Max: 2MB)</small>
-                                                            @if($laporan->sertifikat)
+                                                            <small class="text-muted">Format: PDF, JPG, PNG (Max:
+                                                                2MB)</small>
+                                                            @if ($laporan->sertifikat)
                                                                 <div class="current-file">
-                                                                    <i class="bi bi-check-circle text-success me-1"></i>
-                                                                    <small>File saat ini: {{ $laporan->sertifikat }}</small>
+                                                                    <i
+                                                                        class="bi bi-check-circle text-success me-1"></i>
+                                                                    <small>File saat ini:
+                                                                        {{ $laporan->sertifikat }}</small>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -303,19 +312,25 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="modal-footer modal-footer-modern">
-                                            <button type="button" class="btn btn-elegant btn-outline-secondary" data-bs-dismiss="modal">
+                                            <button type="button" class="btn btn-elegant btn-outline-secondary"
+                                                data-bs-dismiss="modal">
                                                 <i class="bi bi-x me-1"></i>Batal
                                             </button>
-                                            <button type="submit" class="btn btn-elegant 
-                                                @if(strtolower($laporan->hasil_pelatihan) == 'revisi') btn-warning
+                                            <button type="submit"
+                                                class="btn btn-elegant 
+                                                @if (strtolower($laporan->hasil_pelatihan) == 'revisi') btn-warning
                                                 @elseif(strtolower($laporan->hasil_pelatihan) == 'draft') btn-info
                                                 @else btn-primary @endif">
                                                 <i class="bi bi-check-circle me-1"></i>
-                                                @if(strtolower($laporan->hasil_pelatihan) == 'revisi') Perbaiki
-                                                @elseif(strtolower($laporan->hasil_pelatihan) == 'draft') Perbarui
-                                                @else Simpan @endif
+                                                @if (strtolower($laporan->hasil_pelatihan) == 'revisi')
+                                                    Perbaiki
+                                                @elseif(strtolower($laporan->hasil_pelatihan) == 'draft')
+                                                    Perbarui
+                                                @else
+                                                    Simpan
+                                                @endif
                                             </button>
                                         </div>
                                     </form>
@@ -333,7 +348,8 @@
             <i class="bi bi-inbox"></i>
         </div>
         <h6 class="empty-title">Belum Ada Laporan</h6>
-        <p class="empty-text">Anda belum memiliki laporan pelatihan. Laporan akan muncul setelah Anda menyelesaikan pelatihan.</p>
+        <p class="empty-text">Anda belum memiliki laporan pelatihan. Laporan akan muncul setelah Anda menyelesaikan
+            pelatihan.</p>
         <div class="empty-actions">
             <a href="{{ route('pelatihan.pendaftaran') }}" class="btn btn-elegant btn-outline-secondary">
                 <i class="bi bi-clipboard-check me-2"></i>
@@ -818,6 +834,7 @@
 
     /* Responsive Design */
     @media (max-width: 768px) {
+
         .modern-table th,
         .modern-table td {
             padding: 0.75rem 0.5rem;

@@ -14,7 +14,7 @@
         @forelse($tenggats as $item)
             <tr>
                 <td class="text-center col-no">{{ $tenggats->firstItem() + $loop->index }}</td>
-                <td class="col-tahun">{{ $item->tahun }} ({{$item->id}})</td>
+                <td class="col-tahun">{{ $item->tahun }}</td>
                 <td class="col-jenis">{{ ucfirst(str_replace('_', ' ', $item->jenis_deadline)) }}</td>
                 <td class="col-mulai">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') ?: '-' }}</td>
                 <td class="col-deadline">{{ \Carbon\Carbon::parse($item->tanggal_deadline)->format('d M Y') }}</td>

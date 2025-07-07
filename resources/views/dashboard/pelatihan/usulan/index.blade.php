@@ -1,4 +1,4 @@
-@extends('layouts.pelatihan.pelatihan-dashboard')
+@extends('layouts.Pelatihan.pelatihan-dashboard')
 
 @section('title', 'Usulan Pelatihan')
 @section('page-title', 'Usulan Pelatihan')
@@ -85,7 +85,7 @@
 
                     <!-- Dropdown Filter Kolom -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary btn-md dropdown-toggle border border-secondary" type="button" id="columnDropdown"
+                        <button class="btn btn-outline-secondary btn-md dropdown-toggle" type="button" id="columnDropdown"
                             data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
                             <i class="bi bi-eye me-1"></i>Kolom
                         </button>
@@ -94,6 +94,7 @@
                                 $columns = [
                                     'no' => 'No',
                                     'nip' => 'NIP Pengusul',
+                                    'uk' => 'Unit Kerja',
                                     'nama' => 'Nama',
                                     'jenis' => 'Jenis',
                                     'metode' => 'Metode',
@@ -122,7 +123,7 @@
 
                     <!-- Tombol Dropdown Filter -->
                     <div class="dropdown">
-                        <button class="btn btn-outline-primary dropdown-toggle border border-primary" type="button" data-bs-toggle="dropdown"
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <i class="bi bi-filter me-1"></i>Filter
                         </button>
@@ -243,7 +244,7 @@
                 <div class="d-flex flex-column flex-md-row align-items-md-center gap-2">
                     @if (auth()->user()->hasRole('superadmin'))
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-outline-success btn-md dropdown-toggle border border-success"
+                            <button type="button" class="btn btn-outline-success btn-md dropdown-toggle"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-download me-1"></i> Ekspor
                             </button>
@@ -265,7 +266,7 @@
                     @endif
 
                     <a href="{{ route('dashboard.pelatihan.usulan.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-circle"></i> Tambah
+                        <i class="bi bi-plus-circle"></i> Tambah Usulan Pelatihan
                     </a>
                 </div>
             </div>

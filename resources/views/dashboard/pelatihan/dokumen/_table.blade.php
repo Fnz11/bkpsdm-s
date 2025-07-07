@@ -8,7 +8,9 @@
             <th class="col-upload">Tanggal Upload</th>
             <th class="col-keterangan">Keterangan</th>
             <th class="col-status">Status</th>
-            <th class="col-aksi">Aksi</th>
+            @if (auth()->user()->hasRole('superadmin'))
+                <th class="col-aksi">Aksi</th>
+            @endif
         </tr>
     </thead>
     <tbody id="dokumen-table">
@@ -31,12 +33,14 @@
                         {{ ucfirst($dokumen->status) }}
                     </span>
                 </td>
-                <td class="col-aksi">
-                    <a href="{{ route('dashboard.pelatihan.dokumen.show', $dokumen->id) }}"
-                        class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
-                    <a href="{{ route('dashboard.pelatihan.dokumen.edit', $dokumen->id) }}"
-                        class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                </td>
+                @if (auth()->user()->hasRole('superadmin'))
+                    <td class="col-aksi">
+                        <a href="{{ route('dashboard.pelatihan.dokumen.show', $dokumen->id) }}"
+                            class="btn btn-sm btn-primary"><i class="bi bi-eye"></i></a>
+                        <a href="{{ route('dashboard.pelatihan.dokumen.edit', $dokumen->id) }}"
+                            class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                    </td>
+                @endif
             </tr>
         @empty
             <tr>

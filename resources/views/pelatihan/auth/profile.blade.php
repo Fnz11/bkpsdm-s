@@ -28,7 +28,7 @@
             <div class="profile-header-card">
                 <div class="avatar-section">
                     <div class="avatar-container" style="width: 7rem !important; height: 7rem !important;">
-                        <img src="{{ asset('storage/' . $user->refPegawai->foto) }}" alt="Foto Profil"
+                        <img src="{{ asset('storage/' . $user->refPegawai?->foto) }}" alt="Foto Profil"
                             class="profile-avatar" style="width: 7rem !important; height: 7rem !important;" id="profile-avatar"
                             onerror="this.src='{{ asset('images/guest.png') }}'">
                         <div class="avatar-edit-indicator">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="profile-info-section">
-                    <h2 class="profile-name">{{ $user->refPegawai->name }}</h2>
+                    <h2 class="profile-name">{{ $user->refPegawai?->name }}</h2>
                     <div class="profile-badges">
                         <span class="profile-badge badge-primary">{{ $user->role }}</span>
                         <span class="profile-badge badge-secondary">NIP: {{ $user->nip }}</span>
@@ -46,11 +46,11 @@
                     <div class="profile-meta">
                         <div class="meta-item">
                             <i class="bi bi-building"></i>
-                            <span>{{ $user->latestUserPivot->unitKerja->unitkerja->unitkerja }}</span>
+                            <span>{{ $user->latestUserPivot?->unitKerja?->unitkerja->unitkerja }}</span>
                         </div>
                         <div class="meta-item">
                             <i class="bi bi-briefcase"></i>
-                            <span>{{ $user->latestUserPivot->jabatan->jabatan }}</span>
+                            <span>{{ $user->latestUserPivot?->jabatan?->jabatan }}</span>
                         </div>
                     </div>
                 </div>
@@ -76,20 +76,20 @@
                                 Tempat, Tanggal Lahir
                             </label>
                             <div class="info-value view-mode">
-                                {{ $user->refPegawai->tempat_lahir }},
-                                {{ \Carbon\Carbon::parse($user->refPegawai->tanggal_lahir)->translatedFormat('d F Y') }}
+                                {{ $user->refPegawai?->tempat_lahir }},
+                                {{ \Carbon\Carbon::parse($user->refPegawai?->tanggal_lahir)->translatedFormat('d F Y') }}
                             </div>
                             <div class="edit-mode">
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label class="form-label">Tempat Lahir</label>
                                         <input type="text" name="tempat_lahir" class="form-control-modern"
-                                            value="{{ $user->refPegawai->tempat_lahir }}">
+                                            value="{{ $user->refPegawai?->tempat_lahir }}">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Tanggal Lahir</label>
                                         <input type="date" name="tanggal_lahir" class="form-control-modern"
-                                            value="{{ $user->refPegawai->tanggal_lahir->format('Y-m-d') }}">
+                                            value="{{ $user->refPegawai?->tanggal_lahir->format('Y-m-d') }}">
                                     </div>
                                 </div>
                             </div>
@@ -101,9 +101,9 @@
                                 <i class="bi bi-whatsapp me-2"></i>
                                 No. WhatsApp
                             </label>
-                            <div class="info-value view-mode">+{{ $user->refPegawai->no_hp }}</div>
+                            <div class="info-value view-mode">+{{ $user->refPegawai?->no_hp }}</div>
                             <input type="text" name="no_hp" class="form-control-modern edit-mode"
-                                value="{{ $user->refPegawai->no_hp }}">
+                                value="{{ $user->refPegawai?->no_hp }}">
                         </div>
 
                         <!-- Email -->
@@ -123,8 +123,8 @@
                                 <i class="bi bi-house me-2"></i>
                                 Alamat
                             </label>
-                            <div class="info-value view-mode">{{ $user->refPegawai->alamat }}</div>
-                            <textarea name="alamat" class="form-control-modern edit-mode" rows="3">{{ $user->refPegawai->alamat }}</textarea>
+                            <div class="info-value view-mode">{{ $user->refPegawai?->alamat }}</div>
+                            <textarea name="alamat" class="form-control-modern edit-mode" rows="3">{{ $user->refPegawai?->alamat }}</textarea>
                         </div>
                     </div>
 
@@ -140,7 +140,7 @@
                                 <i class="bi bi-person-badge me-2"></i>
                                 Jenis ASN
                             </label>
-                            <div class="info-value readonly">{{ $user->latestUserPivot->golongan->jenisasn->jenis_asn }}
+                            <div class="info-value readonly">{{ $user->latestUserPivot?->golongan?->jenisasn?->jenis_asn }}
                             </div>
                         </div>
 
@@ -150,12 +150,12 @@
                                 <i class="bi bi-award me-2"></i>
                                 Pangkat / Golongan
                             </label>
-                            <div class="info-value view-mode">{{ $user->latestUserPivot->golongan->pangkat }} /
-                                {{ $user->latestUserPivot->golongan->golongan }}</div>
+                            <div class="info-value view-mode">{{ $user->latestUserPivot?->golongan?->pangkat }} /
+                                {{ $user->latestUserPivot?->golongan?->golongan }}</div>
                             <select name="golongan_id" class="form-control-modern edit-mode">
                                 @foreach ($golongans as $golongan)
                                     <option value="{{ $golongan->id }}"
-                                        {{ $user->latestUserPivot->golongan->id == $golongan->id ? 'selected' : '' }}>
+                                        {{ $user->latestUserPivot?->golongan?->id == $golongan->id ? 'selected' : '' }}>
                                         {{ $golongan->pangkat_golongan }}
                                     </option>
                                 @endforeach
@@ -169,7 +169,7 @@
                                 Kategori Jabatan
                             </label>
                             <div class="info-value readonly">
-                                {{ $user->latestUserPivot->jabatan->kategorijabatan->kategori_jabatan }}</div>
+                                {{ $user->latestUserPivot?->jabatan?->kategorijabatan?->kategori_jabatan }}</div>
                         </div>
 
                         <!-- Jabatan -->
@@ -178,11 +178,11 @@
                                 <i class="bi bi-briefcase me-2"></i>
                                 Jabatan
                             </label>
-                            <div class="info-value view-mode">{{ $user->latestUserPivot->jabatan->jabatan }}</div>
+                            <div class="info-value view-mode">{{ $user->latestUserPivot?->jabatan?->jabatan }}</div>
                             <select name="jabatan_id" class="form-control-modern edit-mode">
                                 @foreach ($jabatans as $jabatan)
                                     <option value="{{ $jabatan->id }}"
-                                        {{ $user->latestUserPivot->jabatan->id == $jabatan->id ? 'selected' : '' }}>
+                                        {{ $user->latestUserPivot?->jabatan?->id == $jabatan->id ? 'selected' : '' }}>
                                         {{ $jabatan->jabatan }}
                                     </option>
                                 @endforeach
@@ -195,7 +195,7 @@
                                 <i class="bi bi-building me-2"></i>
                                 Unit Kerja
                             </label>
-                            <div class="info-value readonly">{{ $user->latestUserPivot->unitKerja->unitkerja->unitkerja }}
+                            <div class="info-value readonly">{{ $user->latestUserPivot?->unitKerja?->unitkerja->unitkerja }}
                             </div>
                         </div>
 
@@ -205,11 +205,11 @@
                                 <i class="bi bi-diagram-2 me-2"></i>
                                 Sub Unit Kerja
                             </label>
-                            <div class="info-value view-mode">{{ $user->latestUserPivot->unitKerja->sub_unitkerja }}</div>
+                            <div class="info-value view-mode">{{ $user->latestUserPivot?->unitKerja?->sub_unitkerja }}</div>
                             <select name="sub_unitkerja_id" class="form-control-modern edit-mode">
                                 @foreach ($subunitkerjas as $subunit)
                                     <option value="{{ $subunit->id }}"
-                                        {{ $user->latestUserPivot->unitKerja->id == $subunit->id ? 'selected' : '' }}>
+                                        {{ $user->latestUserPivot?->unitKerja?->id == $subunit->id ? 'selected' : '' }}>
                                         {{ $subunit->sub_unitkerja }}
                                     </option>
                                 @endforeach
@@ -219,7 +219,7 @@
                         <!-- Atasan -->
                         <div class="info-item">
                             @php
-                                $nip = $user->refPegawai->atasan->nip;
+                                $nip = $user->refPegawai?->atasan->nip;
                                 $atasan = \App\Models\RefPegawai::where('nip', $nip)->first();
                             @endphp
                             <label class="info-label">
@@ -1118,7 +1118,7 @@
                 editButton.style.display = 'inline-flex';
 
                 // Reset avatar and form
-                profileAvatar.src = "{{ asset('storage/' . $user->refPegawai->foto) }}";
+                profileAvatar.src = "{{ asset('storage/' . $user->refPegawai?->foto) }}";
                 avatarInput.value = '';
                 fileNameDisplay.style.display = 'none';
                 fileNameDisplay.textContent = '';
