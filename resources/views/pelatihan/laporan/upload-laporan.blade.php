@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="info-content">
                                     <span class="info-label">Peserta</span>
-                                    <span class="info-value">{{ $laporan->pendaftaran->user->name ?? '-' }}</span>
+                                    <span class="info-value">{{ $laporan->pendaftaran->user->refPegawai->name ?? '-' }}</span>
                                 </div>
                             </div>
 

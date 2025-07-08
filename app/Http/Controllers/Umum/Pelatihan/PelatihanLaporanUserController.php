@@ -104,24 +104,24 @@ class PelatihanLaporanUserController extends Controller
         if ($request->hasFile('laporan')) {
             // Hapus file lama jika ada
             if ($laporan->laporan) {
-                Storage::disk('public')->delete('laporan/' . $laporan->laporan);
+                Storage::disk('public')->delete($laporan->laporan);
             }
 
             $laporanFile = $request->file('laporan');
-            $laporanPath = $laporanFile->store('laporan', 'public');
-            $laporan->laporan = basename($laporanPath);
+            $laporanPath = $laporanFile->store('uploads/laporan', 'public');
+            $laporan->laporan = $laporanPath;
         }
 
         // Handle upload file sertifikat
         if ($request->hasFile('sertifikat')) {
             // Hapus file lama jika ada
             if ($laporan->sertifikat) {
-                Storage::disk('public')->delete('sertifikat/' . $laporan->sertifikat);
+                Storage::disk('public')->delete($laporan->sertifikat);
             }
 
             $sertifikatFile = $request->file('sertifikat');
-            $sertifikatPath = $sertifikatFile->store('sertifikat', 'public');
-            $laporan->sertifikat = basename($sertifikatPath);
+            $sertifikatPath = $sertifikatFile->store('uploads/sertifikat', 'public');
+            $laporan->sertifikat = $sertifikatPath;
         }
 
         // Update status ke 'proses' jika sebelumnya 'draft' atau 'revisi'
