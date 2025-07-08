@@ -115,7 +115,7 @@
 
                             <div class="alert alert-info mt-3">
                                 <i class="bi bi-info-circle me-1"></i> Apabila nama pelatihan tidak tersedia, silakan usul nama pelatihan terlebih dahulu dengan menekan tombol berikut:
-                                <a href="{{ route('dashboard.pelatihan.nomenklatur.create') }}" class="btn btn-success btn-sm mt-2">
+                                <a href="{{ auth()->user()->hasRole('admin') ? route('dashboard.pelatihan.nomenklaturadmin.create') : route('dashboard.pelatihan.nomenklatur.create') }}" class="btn btn-success btn-sm mt-2">
                                     <i class="bi bi-plus-circle me-1"></i> Usul Nama Pelatihan
                                 </a>
                                 <p class="mb-0 mt-2"><small>Usulan nama pelatihan akan diverifikasi dan tunggu hingga disetujui.</small></p>

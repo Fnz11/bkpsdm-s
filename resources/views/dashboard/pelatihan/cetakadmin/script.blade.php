@@ -232,4 +232,19 @@
             fetchData();
         });
     });
+
+    // Ganti bagian update status dengan ini:
+    $(document).on('click', '#btn-submit-cetak', function(e) {
+        e.preventDefault(); // Blokir fungsi default
+        const form = $(this).closest('form');
+
+        if (form.length) {
+            showAlertModal('Pendaftaran yang sudah dicetak, tidak dapat dicetak ulang?', 'Confirm', 0, {
+                confirmText: '<i class="bi bi-check-circle me-1"></i>Ya',
+                onConfirm: () => {
+                    form.submit();
+                }
+            });
+        }
+    });
 </script>

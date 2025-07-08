@@ -104,7 +104,7 @@ class UserSeeder extends Seeder
             DB::table('ref_pegawai')->insert([
                 'nip' => $nip,
                 'name' => $nama,
-                'foto' => 'default.jpg',
+                'foto' => null,
                 'alamat' => 'Kantor Pusat',
                 'no_hp' => 0,
                 'nip_atasan' => '199908282023081001',

@@ -70,7 +70,7 @@
         $('.pagination a').addClass('disabled');
 
         $.ajax({
-            url: "{{ route('dashboard.pelatihan.nomenklatur') }}",
+            url: "{{ route('dashboard.pelatihan.nomenklaturadmin') }}",
             type: "GET",
             data: {
                 search: $('#filter-search').val(),

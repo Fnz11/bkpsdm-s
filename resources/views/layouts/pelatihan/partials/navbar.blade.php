@@ -1,4 +1,8 @@
 <style>
+    .nav-item.dropdown .nav-link {
+        cursor: pointer;
+    }
+
     .dropdown {
         position: relative;
     }
@@ -249,9 +253,9 @@
         border-radius: 2px;
     }
 
-    .nav-link:hover {
-        color: var(--secondary-color);
-    }
+    /* .nav-link:hover {
+        color: var(--primary-color);
+    } */
 
     .nav-link:hover::after,
     .nav-link.active::after {
@@ -355,8 +359,7 @@
             @endif
         </li>
         <li class="nav-item dropdown">
-            <div
-                class="nav-link dropdown-toggle {{ request()->routeIs('pelatihan.daftar-pelatihan') || request()->routeIs('pelatihan.usulan.index') ? 'active text-primary' : '' }}">
+            <div class="nav-link {{ request()->routeIs('pelatihan.daftar-pelatihan') || request()->routeIs('pelatihan.usulan.index') ? 'active text-primary' : '' }}">
                 Pelatihan
             </div>
             <ul class="dropdown-menu" id="pelatihanDropdownMenu">

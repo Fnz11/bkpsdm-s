@@ -29,8 +29,8 @@
                 <div class="avatar-section">
                     <div class="avatar-container" style="width: 7rem !important; height: 7rem !important;">
                         <img src="{{ asset('storage/' . $user->refPegawai?->foto) }}" alt="Foto Profil"
-                            class="profile-avatar" style="width: 7rem !important; height: 7rem !important;" id="profile-avatar"
-                            onerror="this.src='{{ asset('images/guest.png') }}'">
+                            class="profile-avatar" style="width: 7rem !important; height: 7rem !important;"
+                            id="profile-avatar" onerror="this.src='{{ asset('images/guest.png') }}'">
                         <div class="avatar-edit-indicator">
                             <i class="bi bi-camera"></i>
                         </div>
@@ -152,7 +152,8 @@
                             </label>
                             <div class="info-value view-mode">{{ $user->latestUserPivot?->golongan?->pangkat }} /
                                 {{ $user->latestUserPivot?->golongan?->golongan }}</div>
-                            <select name="golongan_id" class="form-control-modern edit-mode">
+                                <div class="edit-mode" style="display: none;">
+                            <select name="golongan_id" class="form-control-modern select2">
                                 @foreach ($golongans as $golongan)
                                     <option value="{{ $golongan->id }}"
                                         {{ $user->latestUserPivot?->golongan?->id == $golongan->id ? 'selected' : '' }}>
@@ -160,6 +161,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                                </div>
                         </div>
 
                         <!-- Kategori Jabatan -->
@@ -179,7 +181,8 @@
                                 Jabatan
                             </label>
                             <div class="info-value view-mode">{{ $user->latestUserPivot?->jabatan?->jabatan }}</div>
-                            <select name="jabatan_id" class="form-control-modern edit-mode">
+                            <div class="edit-mode" style="display: none;">
+                            <select name="jabatan_id" class="form-control-modern select2">
                                 @foreach ($jabatans as $jabatan)
                                     <option value="{{ $jabatan->id }}"
                                         {{ $user->latestUserPivot?->jabatan?->id == $jabatan->id ? 'selected' : '' }}>
@@ -187,6 +190,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            </div>
                         </div>
 
                         <!-- Unit Kerja -->
@@ -195,7 +199,8 @@
                                 <i class="bi bi-building me-2"></i>
                                 Unit Kerja
                             </label>
-                            <div class="info-value readonly">{{ $user->latestUserPivot?->unitKerja?->unitkerja->unitkerja }}
+                            <div class="info-value readonly">
+                                {{ $user->latestUserPivot?->unitKerja?->unitkerja->unitkerja }}
                             </div>
                         </div>
 
@@ -205,8 +210,10 @@
                                 <i class="bi bi-diagram-2 me-2"></i>
                                 Sub Unit Kerja
                             </label>
-                            <div class="info-value view-mode">{{ $user->latestUserPivot?->unitKerja?->sub_unitkerja }}</div>
-                            <select name="sub_unitkerja_id" class="form-control-modern edit-mode">
+                            <div class="info-value view-mode">{{ $user->latestUserPivot?->unitKerja?->sub_unitkerja }}
+                            </div>
+                            <div class="edit-mode" style="display: none;">
+                            <select name="sub_unitkerja_id" class="form-control-modern select2">
                                 @foreach ($subunitkerjas as $subunit)
                                     <option value="{{ $subunit->id }}"
                                         {{ $user->latestUserPivot?->unitKerja?->id == $subunit->id ? 'selected' : '' }}>
@@ -214,6 +221,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            </div>
                         </div>
 
                         <!-- Atasan -->
@@ -282,11 +290,13 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Unit Kerja</th>
+                                        <th>Sub Unit Kerja</th>
+                                        <th>Kategori Jabatan</th>
                                         <th>Jabatan</th>
+                                        <th>Jenis ASN</th>
                                         <th>Pangkat/Golongan</th>
                                         <th>Tanggal Mulai</th>
                                         <th>Tanggal Akhir</th>
-                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -295,18 +305,15 @@
                                             <td>{{ ($activePivots->currentPage() - 1) * $activePivots->perPage() + $loop->iteration }}
                                             </td>
                                             <td>{{ $pivot->unitKerja->unitkerja->unitkerja ?? '-' }}</td>
+                                            <td>{{ $pivot->unitKerja->sub_unitkerja ?? '-' }}</td>
+                                            <td>{{ $pivot->jabatan->kategorijabatan->kategori_jabatan ?? '-' }}</td>
                                             <td>{{ $pivot->jabatan->jabatan ?? '-' }}</td>
+                                            <td>{{ $pivot->golongan->jenisasn->jenis_asn ?? '-' }}</td>
                                             <td>{{ $pivot->golongan->pangkat ?? '-' }} /
                                                 {{ $pivot->golongan->golongan ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($pivot->tgl_mulai)->translatedFormat('d F Y') }}
                                             </td>
                                             <td>{{ $pivot->tgl_akhir ? \Carbon\Carbon::parse($pivot->tgl_akhir)->translatedFormat('d F Y') : '-' }}
-                                            </td>
-                                            <td>
-                                                <span class="status-badge status-active">
-                                                    <i class="bi bi-check-circle me-1"></i>
-                                                    Aktif
-                                                </span>
                                             </td>
                                         </tr>
                                     @empty
@@ -345,7 +352,10 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Unit Kerja</th>
+                                        <th>Sub Unit Kerja</th>
+                                        <th>Kategori Jabatan</th>
                                         <th>Jabatan</th>
+                                        <th>Jenis ASN</th>
                                         <th>Pangkat/Golongan</th>
                                         <th>Tanggal Diajukan</th>
                                         <th>Status</th>
@@ -357,7 +367,10 @@
                                             <td>{{ ($proposedPivots->currentPage() - 1) * $proposedPivots->perPage() + $loop->iteration }}
                                             </td>
                                             <td>{{ $pivot->unitKerja->unitkerja->unitkerja ?? '-' }}</td>
+                                            <td>{{ $pivot->unitKerja->sub_unitkerja ?? '-' }}</td>
+                                            <td>{{ $pivot->jabatan->kategorijabatan->kategori_jabatan ?? '-' }}</td>
                                             <td>{{ $pivot->jabatan->jabatan ?? '-' }}</td>
+                                            <td>{{ $pivot->golongan->jenisasn->jenis_asn ?? '-' }}</td>
                                             <td>{{ $pivot->golongan->pangkat ?? '-' }} /
                                                 {{ $pivot->golongan->golongan ?? '-' }}</td>
                                             <td>{{ \Carbon\Carbon::parse($pivot->created_at)->translatedFormat('d F Y') }}
@@ -371,7 +384,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="empty-cell">Tidak ada usulan perubahan</td>
+                                            <td colspan="9" class="empty-cell">Tidak ada usulan perubahan</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -402,6 +415,15 @@
 
 @section('additional-css')
     <style>
+        /* Dengan ini */
+        .view-mode~.select2-container {
+            display: none !important;
+        }
+
+        .edit-mode .select2-container {
+            display: block !important;
+        }
+
         .file-name-display {
             position: absolute;
             bottom: -16px;
@@ -724,13 +746,13 @@
             line-height: 1.5;
         }
 
-        .info-value.readonly {
+        /* .info-value.readonly {
             background: var(--bg-secondary);
             padding: 0.75rem 1rem;
             border-radius: var(--border-radius-sm);
             border: 2px solid var(--border-color);
             color: var(--text-secondary);
-        }
+        } */
 
         /* Form Controls */
         .form-control-modern {
@@ -1091,7 +1113,18 @@
             editButton.addEventListener('click', function() {
                 // Show edit elements
                 viewModeElements.forEach(el => el.style.display = 'none');
-                editModeElements.forEach(el => el.style.display = 'block');
+                editModeElements.forEach(el => {
+                    el.style.display = 'block';
+                    // Reinitialize select2 for visible elements
+                    if (el.querySelector('.select2')) {
+                        $(el.querySelector('.select2')).select2({
+                            theme: 'bootstrap4',
+                            placeholder: 'Cari & Pilih',
+                            allowClear: true,
+                            width: '100%'
+                        });
+                    }
+                });
                 formActions.style.display = 'flex';
 
                 // Add edit mode class to avatar container
@@ -1108,7 +1141,13 @@
             cancelButton.addEventListener('click', function() {
                 // Show view elements
                 viewModeElements.forEach(el => el.style.display = 'block');
-                editModeElements.forEach(el => el.style.display = 'none');
+                editModeElements.forEach(el => {
+                    el.style.display = 'none';
+                    // Destroy select2 for hidden elements
+                    if (el.querySelector('.select2')) {
+                        $(el.querySelector('.select2')).select2('destroy');
+                    }
+                });
                 formActions.style.display = 'none';
 
                 // Remove edit mode class from avatar container

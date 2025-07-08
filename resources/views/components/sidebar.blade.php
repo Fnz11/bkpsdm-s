@@ -285,10 +285,16 @@
         <div class="d-flex align-items-center justify-between w-full">
             <div class="footer-content">
                 <div class="user-avatar">
-                    <i class="bi bi-person-circle"></i>
+                    @if (Auth::user()->refPegawai->foto === null)
+                        <i class="bi bi-person-circle"></i>
+                    @else
+                        <img src="{{ asset('storage/' . Auth::user()->refPegawai->foto) }}" alt="Foto Profil"
+                            class="profile-avatar"
+                            style="width: 3rem !important; height: 3rem !important; border-radius: 20%;" id="avatar">
+                    @endif
                 </div>
                 <div class="user-info">
-                    <div class="user-name">{{ auth()->user()->name ?? 'User' }}</div>
+                    <div class="user-name">{{ auth()->user()->refPegawai->name ?? 'User' }}</div>
                     <div class="user-role">{{ auth()->user()->getRoleNames()->first() ?? 'User' }}</div>
                 </div>
             </div>

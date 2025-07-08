@@ -91,7 +91,7 @@
                         </td>
                         <td class="col-laporan">
                             @if ($laporan->laporan)
-                                <a href="{{ asset('storage/laporan/' . $laporan->laporan) }}" target="_blank"
+                                <a href="{{ asset('storage//' . $laporan->laporan) }}" target="_blank"
                                     class="btn btn-elegant btn-outline-primary btn-sm" data-bs-toggle="tooltip"
                                     title="Lihat laporan">
                                     <i class="bi bi-file-earmark-text-fill me-1"></i>
@@ -106,7 +106,7 @@
                         </td>
                         <td class="col-sertifikat">
                             @if ($laporan->sertifikat)
-                                <a href="{{ asset('storage/sertifikat/' . $laporan->sertifikat) }}" target="_blank"
+                                <a href="{{ asset('storage//' . $laporan->sertifikat) }}" target="_blank"
                                     class="btn btn-elegant btn-outline-success btn-sm" data-bs-toggle="tooltip"
                                     title="Lihat sertifikat">
                                     <i class="bi bi-award-fill me-1"></i>

@@ -91,6 +91,7 @@ class DeepwareAuthController extends Controller
         $activePivots = $user->userPivot()
             ->where('is_active', true)
             ->orderBy('tgl_mulai', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(5, ['*'], 'active_page');
 
         $proposedPivots = $user->userPivot()

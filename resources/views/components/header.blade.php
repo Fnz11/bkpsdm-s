@@ -1,11 +1,8 @@
 <header class="header text-white d-flex justify-content-between align-items-center py-3 shadow-sm">
     <div class="user-info fw-semibold ps-2">
         @auth
-            @if (auth()->user()->latestUserPivot->unitKerja->unitkerja->unitkerja === null)
-                {{ auth()->user()->refPegawai->name }} ({{ ucfirst(auth()->user()->role) }})
-            @else
-                {{ auth()->user()->refPegawai->name }} -
-                {{ auth()->user()->latestUserPivot->unitKerja->unitkerja->unitkerja ?? '-' }} ({{ ucfirst(auth()->user()->role) }})
+            @if (auth()->user()->latestUserPivot->unitKerja->unitkerja->unitkerja !== null)
+                {{ auth()->user()->latestUserPivot->unitKerja->unitkerja->unitkerja ?? '-' }}
             @endif
         @endauth
     </div>

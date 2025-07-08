@@ -36,6 +36,9 @@ class RefNomenklaturController extends Controller
                         ->orWhere('keterangan', 'like', "%{$search}%")
                         ->orWhereHas('jenispelatihan', function ($q2) use ($search) {
                             $q2->where('jenis_pelatihan', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('user.refPegawai', function ($q3) use ($search) {
+                            $q3->where('name', 'like', "%{$search}%");
                         });
                 });
             })
@@ -72,6 +75,9 @@ class RefNomenklaturController extends Controller
                         ->orWhere('keterangan', 'like', "%{$search}%")
                         ->orWhereHas('jenispelatihan', function ($q2) use ($search) {
                             $q2->where('jenis_pelatihan', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('user.refPegawai', function ($q3) use ($search) {
+                            $q3->where('name', 'like', "%{$search}%");
                         });
                 });
             })

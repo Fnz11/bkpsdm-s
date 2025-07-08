@@ -210,14 +210,14 @@
                     </div>
                     <div class="card-body">
                         <div class="action-buttons">
-                            <a href="{{ asset('storage/sertifikat/' . $laporan->sertifikat) }}" 
+                            <a href="{{ asset('storage//' . $laporan->sertifikat) }}" 
                                target="_blank" 
                                class="btn btn-elegant btn-outline-success">
                                 <i class="bi bi-award me-2"></i>
                                 Lihat Sertifikat
                             </a>
 
-                            <a href="{{ asset('storage/laporan/' . $laporan->laporan) }}" 
+                            <a href="{{ asset('storage//' . $laporan->laporan) }}" 
                                target="_blank" 
                                class="btn btn-elegant btn-outline-info">
                                 <i class="bi bi-file-earmark-text me-2"></i>
