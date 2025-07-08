@@ -25,7 +25,8 @@ class PelatihanTenggatUploadController extends Controller
                         ->orWhere('tahun', 'like', "%{$search}%");
                 });
             })
-            ->orderByDesc('tahun')
+            ->orderBy('tahun', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(25)
             ->withQueryString();
 
@@ -44,7 +45,7 @@ class PelatihanTenggatUploadController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'tahun'             => 'required|integer|min:2000|max:' . date('Y'),
+            'tahun'             => 'required|integer|min:2000|max:' . (date('Y') + 5),
             'jenis_deadline'    => 'required|in:laporan_user,dokumen_admin',
             'tanggal_deadline'  => 'required|date|after_or_equal:tanggal_mulai',
             'tanggal_mulai'     => 'nullable|date|before_or_equal:tanggal_deadline',
@@ -84,7 +85,7 @@ class PelatihanTenggatUploadController extends Controller
         $tenggat = PelatihanTenggatUpload::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'tahun'             => 'required|integer|min:2000|max:' . date('Y'),
+            'tahun'             => 'required|integer|min:2000|max:' . (date('Y') + 5),
             'jenis_deadline'    => 'required|in:laporan_user,dokumen_admin',
             'tanggal_deadline'  => 'required|date|after_or_equal:tanggal_mulai',
             'tanggal_mulai'     => 'nullable|date|before_or_equal:tanggal_deadline',

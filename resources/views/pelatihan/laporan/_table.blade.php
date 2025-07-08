@@ -140,7 +140,7 @@
                                     $canUpload = true;
 
                                     if ($deadline) {
-                                        $deadlineDate = \Carbon\Carbon::parse($deadline->tanggal_deadline);
+                                        $deadlineDate = \Carbon\Carbon::parse($deadline->tanggal_deadline)->endOfDay();
                                         $canUpload = $now->lte($deadlineDate); // true jika sekarang <= deadline
                                     }
                                 @endphp

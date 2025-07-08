@@ -35,7 +35,7 @@ class PelatihanUsulanSeeder extends Seeder
                 'estimasi_biaya' => rand(1000000, 4000000),
             ]);
 
-            $statusVerifikasi = ['tersimpan', 'tercetak', 'terkirim', 'diterima', 'ditolak'][rand(0, 3)];
+            $statusVerifikasi = ['tersimpan', 'tercetak', 'terkirim', 'diterima', 'ditolak'][rand(0, 4)];
             $statusPeserta = $statusVerifikasi === 'diterima' ? (rand(0, 1) ? 'peserta' : 'alumni') : 'calon_peserta';
 
             $pendaftaran = Pelatihan3Pendaftaran::create([

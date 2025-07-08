@@ -67,7 +67,7 @@ use App\Http\Controllers\Umum\Pelatihan\PelatihanLaporanUserController;
 
 Route::get('/', function () {
     return view('FrontPage.index');
-});
+})->name('frontpage.index');
 
 // #################### DEEPWARE - PELATIHAN🌟 ####################
 
@@ -379,9 +379,9 @@ Route::middleware(['role:admin|superadmin'])->group(function () {
 // #################### DEEPWARE - PELATIHAN🌟 ####################
 
 //Route untuk halaman publik
-Route::get('/', function () {
-    return view('FrontPage.index');
-})->name('frontpage.index');
+// Route::get('/', function () {
+//     return view('FrontPage.index');
+// })->name('frontpage.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/selfAssessment', [AkpkPertanyaanDiriController::class, 'index']);

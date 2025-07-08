@@ -41,11 +41,16 @@
                         fields: [
                             {
                                 name: 'tahun',
-                                type: 'number',
+                                type: 'select',
                                 label: 'Tahun',
                                 required: true,
-                                placeholder: 'Contoh: 2025',
-                                col: 6
+                                placeholder: 'Pilih Tahun',
+                                col: 6,
+                                select2: true,
+                                options: [
+                                    @for ($i = now() ->year + 5; $i >= now()->year - 5; $i--)
+                                        { value: '{{ $i }}', label: '{{ $i }}' }, @endfor
+                                ]
                             },
                             {
                                 name: 'jenis_deadline',
@@ -89,8 +94,11 @@
                                 col: 6,
                                 select2: true,
                                 options: [
-                                    @foreach (\App\Models\Pelatihan3Pendaftaran::orderBy('id')->get() as $item)
-                                        { value: '{{ $item->id }}', label: 'Pendaftaran #{{ $item->id }}' }, @endforeach
+                                    @foreach (\App\Models\Pelatihan3Pendaftaran::with('usulan')->whereNotNull('usulan_id')->orderBy('id')->get() as $item)
+                                    {
+                                        value: '{{ $item->id }}',
+                                        label: '{{ $item->usulan?->nama_pelatihan ?? $item->kode_pendaftaran }}'
+                                    }, @endforeach
                                 ]
                             },
                             {

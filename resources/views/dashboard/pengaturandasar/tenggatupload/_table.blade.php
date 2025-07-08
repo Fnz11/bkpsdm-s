@@ -4,6 +4,7 @@
             <th class="col-no text-center">No</th>
             <th class="col-tahun">Tahun</th>
             <th class="col-jenis">Jenis Deadline</th>
+            <th class="col-pelatihan">Pelatihan</th>
             <th class="col-mulai">Mulai</th>
             <th class="col-deadline">Deadline</th>
             <th class="col-keterangan">Keterangan</th>
@@ -16,6 +17,8 @@
                 <td class="text-center col-no">{{ $tenggats->firstItem() + $loop->index }}</td>
                 <td class="col-tahun">{{ $item->tahun }}</td>
                 <td class="col-jenis">{{ ucfirst(str_replace('_', ' ', $item->jenis_deadline)) }}</td>
+                <td class="col-pelatihan">
+                    {{ $item->tersedia?->nama_pelatihan ?? ($item->pendaftaran?->usulan?->nama_pelatihan ?? '-') }}</td>
                 <td class="col-mulai">{{ \Carbon\Carbon::parse($item->tanggal_mulai)->format('d M Y') ?: '-' }}</td>
                 <td class="col-deadline">{{ \Carbon\Carbon::parse($item->tanggal_deadline)->format('d M Y') }}</td>
                 <td class="col-keterangan">{{ $item->keterangan }}</td>
@@ -38,11 +41,17 @@
                         fields: [
                             {
                                 name: 'tahun',
-                                type: 'number',
+                                type: 'select',
                                 label: 'Tahun',
                                 required: true,
-                                placeholder: 'Contoh: 2025',
-                                col: 6
+                                placeholder: 'Pilih Tahun',
+                                col: 6,
+                                select2: true,
+                                options: [
+                                    @for ($i = now()->year + 5; $i >= now()->year - 5; $i--)
+                                        { value: '{{ $i }}', label: '{{ $i }}' },
+                                    @endfor
+                                ]
                             },
                             {
                                 name: 'jenis_deadline',
@@ -86,8 +95,11 @@
                                 col: 6,
                                 select2: true,
                                 options: [
-                                    @foreach (\App\Models\Pelatihan3Pendaftaran::orderBy('id')->get() as $daftar)
-                                        { value: '{{ $daftar->id }}', label: 'Pendaftaran #{{ $daftar->id }}' }, @endforeach
+                                    @foreach (\App\Models\Pelatihan3Pendaftaran::with('usulan')->whereNotNull('usulan_id')->orderBy('id')->get() as $daftar)
+                                        {
+                                            value: '{{ $daftar->id }}',
+                                            label: '{{ $daftar->usulan?->nama_pelatihan ?? $daftar->kode_pendaftaran }}'
+                                        }, @endforeach
                                 ]
                             },
                             {

@@ -39,7 +39,7 @@ class PelatihanTersediaSeeder extends Seeder
 
             for ($j = 0; $j < rand(3, 6); $j++) {
                 $userNip = $users[array_rand($users)];
-                $statusVerifikasi = ['tersimpan', 'tercetak', 'terkirim', 'diterima', 'ditolak'][rand(0, 3)];
+                $statusVerifikasi = ['tersimpan', 'tercetak', 'terkirim', 'diterima', 'ditolak'][rand(0, 4)];
                 $statusPeserta = $statusVerifikasi === 'diterima' ? (rand(0, 1) ? 'peserta' : 'alumni') : 'calon_peserta';
                 $kode = 'TSP' . $tersedia->id . now()->format('YmdHis') . rand(100, 999);
 
